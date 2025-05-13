@@ -1,0 +1,19 @@
+{
+  "name": "code_agent_js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx jest"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [],
+  "description": "",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.50.4",
+    "openai": "^4.98.0"
+  }
+}
