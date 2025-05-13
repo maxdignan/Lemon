@@ -10,6 +10,7 @@ const timeTool = {
     required: [],
   },
   function: () => {
+    console.log('get_current_time tool called');
     return new Date().toISOString();
   },
 };
@@ -17,20 +18,20 @@ const timeTool = {
 // Test function to demonstrate both streaming and non-streaming usage
 async function testCallLLM() {
   try {
-    // Non-streaming example
-    console.log('\nTesting non-streaming response:');
-    const response = await callLLM(
-      'You are a helpful assistant that can tell the time. When asked about the time, use the get_current_time tool.',
-      'What time is it right now?',
-      {
-        provider: 'anthropic',
-        model: 'claude-3-5-sonnet-20240620',
-        tools: [timeTool],
-        temperature: 0.7,
-      }
-    );
+    // // Non-streaming example
+    // console.log('\nTesting non-streaming response:');
+    // const response = await callLLM(
+    //   'You are a helpful assistant that can tell the time. When asked about the time, use the get_current_time tool.',
+    //   'What time is it right now?',
+    //   {
+    //     provider: 'anthropic',
+    //     model: 'claude-3-5-sonnet-20240620',
+    //     tools: [timeTool],
+    //     temperature: 0.7,
+    //   }
+    // );
 
-    console.log('Response:', response.content);
+    // console.log('Response:', response.content);
 
     // Streaming example
     console.log('\nTesting streaming response:');
@@ -53,6 +54,22 @@ async function testCallLLM() {
       fullResponse += chunk;
     }
     console.log('\n\nFull streamed response:', fullResponse);
+
+    // Test tool call handling
+    console.log('\nTesting tool call handling:');
+    const toolCallResponse = await callLLM(
+      'You are a helpful assistant that can tell the time. When asked about the time, use the get_current_time tool.',
+      'What time is it right now?',
+      {
+        provider: 'anthropic',
+        model: 'claude-3-5-sonnet-20240620',
+        tools: [timeTool],
+        temperature: 0.7,
+        stream: true,
+      }
+    );
+
+    console.log('Tool Call Response:', toolCallResponse.content);
 
   } catch (error) {
     console.error('Error:', error.message);
