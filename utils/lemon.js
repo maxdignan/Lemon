@@ -63,32 +63,6 @@ export default callLemon;
 
 const tools = [
     {
-      name: "get_weather",
-      description: "Get the weather for a given city",
-      input_schema: {
-        type: "object",
-        properties: { city: { type: "string" } },
-      },
-      function: async (input) => {
-        return {
-          weather: "sunny",
-        };
-      },
-    },
-    {
-      name: "get_time",
-      description: "Get the time for a given city",
-      input_schema: {
-        type: "object",
-        properties: { city: { type: "string" } },
-      },
-      function: async (input) => {
-        return {
-          time: "10:00",
-        };
-      },
-    },
-    {
         name: "file_summary",
         description: "Summarize a file",
         input_schema: {
@@ -174,10 +148,27 @@ const tools = [
             properties: { pattern: { type: "string" } },
         },
         function: async (input) => {
-            const result = await exec(`grep -r ${input.pattern} .`);
-            return {
-                result: result,
-            };
+            const [success, result] = await new Promise((resolve, reject) => {
+                exec(`grep -r ${input.pattern} .`, (error, stdout, stderr) => {
+                    if (error) {
+                        resolve([false, error]);
+                    } else {
+                        resolve([true, stdout]);
+                    }
+                });
+            });
+            if (success) {
+                return {
+                    result: result,
+                };
+            } else {
+                return {
+                    error: {
+                        type: "tool_call_error",
+                        message: result,
+                    },
+                };
+            }
         },
     },
     {
@@ -241,18 +232,27 @@ const tools = [
             properties: { relative_file_path: { type: "string" } },
         },
         function: async (input) => {
-            const result = await new Promise((resolve, reject) => {
+            const [success, result] = await new Promise((resolve, reject) => {
                 exec(`git diff ${input.relative_file_path}`, (error, stdout, stderr) => {
                     if (error) {
-                        reject(error);
+                        resolve([false, error]);
                     } else {
-                        resolve(stdout);
+                        resolve([true, stdout]);
                     }
                 });
             });
-            return {
-                result: result,
-            };
+            if (success) {
+                return {
+                    result: result,
+                };
+            } else {
+                return {
+                    error: {
+                        type: "tool_call_error",
+                        message: result,
+                    },
+                };
+            }
         },
     },
     {
@@ -263,18 +263,27 @@ const tools = [
             properties: { relative_file_path: { type: "string" } },
         },
         function: async (input) => {
-            const result = await new Promise((resolve, reject) => {
+            const [success, result] = await new Promise((resolve, reject) => {
                 exec(`git add ${input.relative_file_path}`, (error, stdout, stderr) => {
                     if (error) {
-                        reject(error);
+                        resolve([false, error]);
                     } else {
-                        resolve(stdout);
+                        resolve([true, stdout]);
                     }
                 });
             });
-            return {
-                result: result,
-            };
+            if (success) {
+                return {
+                    result: result,
+                };
+            } else {
+                return {
+                    error: {
+                        type: "tool_call_error",
+                        message: result,
+                    },
+                };
+            }
         },
     },
     {
@@ -285,18 +294,27 @@ const tools = [
             properties: { message: { type: "string" } },
         },
         function: async (input) => {
-            const result = await new Promise((resolve, reject) => {
+            const [success, result] = await new Promise((resolve, reject) => {
                 exec(`git commit -m "${input.message}"`, (error, stdout, stderr) => {
                     if (error) {
-                        reject(error);
+                        resolve([false, error]);
                     } else {
-                        resolve(stdout);
+                        resolve([true, stdout]);
                     }
                 });
             });
-            return {
-                result: result,
-            };
+            if (success) {
+                return {
+                    result: result,
+                };
+            } else {
+                return {
+                    error: {
+                        type: "tool_call_error",
+                        message: result,
+                    },
+                };
+            }
         },
     },
 ];
