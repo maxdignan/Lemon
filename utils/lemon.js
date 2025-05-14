@@ -88,9 +88,27 @@ const tools = [
             properties: { relative_path: { type: "string" } },
         },
         function: async (input) => {
-            return {
-                files: await exec(`ls -la ${input.relative_path}`),
-            };
+            const [success, result] = await new Promise((resolve, reject) => {
+                exec(`ls -la ${input.relative_path}`, (error, stdout, stderr) => {
+                    if (error) {
+                        resolve([false, error]);
+                    } else {
+                        resolve([true, stdout]);
+                    }
+                });
+            });
+            if (success) {
+                return {
+                    result: result,
+                };
+            } else {
+                return {
+                    error: {
+                        type: "tool_call_error",
+                        message: result,
+                    },
+                };
+            }
         },
     },
     {
