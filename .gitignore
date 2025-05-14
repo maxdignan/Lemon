@@ -1,0 +1,60 @@
+# Ignore macOS system files
+.DS_Store
+
+# Ignore node modules
+node_modules/
+
+# Ignore logs
+*.log
+
+# Ignore the build directory
+/dist
+
+# Ignore IDE specific files
+.idea/
+.vscode/
+*.sw*
+
+# Ignore environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore package-lock files
+package-lock.json
+yarn.lock
+
+# Ignore coverage directory
+/coverage
+
+# Ignore temp files
+*.tmp
+*.temp
+
+# Ignore OS generated files
+ehthumbs.db
+Thumbs.db
+
+# Ignore files related to API keys
+.env*.local
+
+# Ignore compiled Python files
+*.pyc
+__pycache__/
+
+# Ignore compiled Java classes
+*.class
+
+# Ignore build output directories
+/build
+/out
+
+# Ignore dependency directories
+/vendor
+/bower_components
+
+# Ignore personal TODO files
+TODO.md
+todo.txt
