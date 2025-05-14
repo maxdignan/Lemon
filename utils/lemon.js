@@ -218,6 +218,20 @@ const tools = [
         },
     },
     {
+        name: "move_file",
+        description: "Move a file",
+        input_schema: {
+            type: "object",
+            properties: { relative_file_path: { type: "string" }, new_relative_file_path: { type: "string" } },
+        },
+        function: async (input) => {
+            fs.renameSync(input.relative_file_path, input.new_relative_file_path);
+            return {
+                success: true,
+            };
+        },
+    },
+    {
         name: "write_memory",
         description: "Write a note to the memory",
         input_schema: {
@@ -227,7 +241,7 @@ const tools = [
         function: async (input) => {
             // append to the memory file
             // new line, date, memory
-            fs.appendFileSync("memory.md", "\n" + new Date().toISOString() + ": " + input.memory);
+            fs.appendFileSync("./.lemon/memory.md", "\n" + new Date().toISOString() + ": " + input.memory);
             return { success: true };
         },
     },
@@ -236,22 +250,22 @@ const tools = [
         description: "Read the memory",
         input_schema: {
             type: "object",
-            properties: { relative_file_path: { type: "string" } },
+            properties: {},
         },
-        function: async (input) => {
-            return { memory: fs.readFileSync("memory.md", "utf8") };
+        function: async () => {
+            return { memory: fs.readFileSync("./.lemon/memory.md", "utf8") };
         },
     },
     {
-        name: "git_diff",
-        description: "Get the git diff",
+        name: "git_status",
+        description: "Get the git status. Use this tool to determine what work has been done since the last commit.",
         input_schema: {
             type: "object",
-            properties: { relative_file_path: { type: "string" } },
+            properties: {},
         },
         function: async (input) => {
             const [success, result] = await new Promise((resolve, reject) => {
-                exec(`git diff ${input.relative_file_path}`, (error, stdout, stderr) => {
+                exec(`git status`, (error, stdout, stderr) => {
                     if (error) {
                         resolve([false, error]);
                     } else {
@@ -371,7 +385,7 @@ export { agent };
 var memory;
 
 try {
-    memory = fs.readFileSync("memory.md", "utf8");
+    memory = fs.readFileSync("./.lemon/memory.md", "utf8");
 } catch (error) {
     memory = "";
 }
