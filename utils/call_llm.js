@@ -28,7 +28,7 @@ const PROVIDERS = {
   anthropic: {
     envKey: 'ANTHROPIC_API_KEY',
     clientClass: Anthropic,
-    defaultModel: 'claude-3-opus-20240229',
+    defaultModel: 'claude-3-5-sonnet-20240620',
     supportsStreaming: true,
   },
 };

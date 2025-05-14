@@ -1,0 +1,16 @@
+diff --git a/.DS_Store b/.DS_Store
+index a487034..b54f918 100644
+Binary files a/.DS_Store and b/.DS_Store differ
+diff --git a/utils/call_llm.js b/utils/call_llm.js
+index a45d584..1920a50 100644
+--- a/utils/call_llm.js
++++ b/utils/call_llm.js
+@@ -28,7 +28,7 @@ const PROVIDERS = {
+   anthropic: {
+     envKey: 'ANTHROPIC_API_KEY',
+     clientClass: Anthropic,
+-    defaultModel: 'claude-3-opus-20240229',
++    defaultModel: 'claude-3-5-sonnet-20240620',
+     supportsStreaming: true,
+   },
+ };
