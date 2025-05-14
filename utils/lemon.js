@@ -167,7 +167,7 @@ const tools = [
         },
         function: async (input) => {
             const [success, result] = await new Promise((resolve, reject) => {
-                exec(`grep -r ${input.pattern} .`, (error, stdout, stderr) => {
+                exec(`grep -r -i -l -n --exclude-dir='./.*' --exclude-dir='node_modules' '${input.pattern}' .`, (error, stdout, stderr) => {
                     if (error) {
                         resolve([false, error]);
                     } else {
